@@ -5,8 +5,22 @@
 // https://golang.org/doc/effective_go.html#commentary
 package acronym
 
-// Abbreviate should have a comment documenting it.
-func Abbreviate(s string) string {
+import (
+	"bytes"
+	"regexp"
+)
 
-	return ""
+// Abbreviate takes a string of words and produces an Acronym
+// using the first character of each word
+func Abbreviate(s string) string {
+	re := regexp.MustCompile(`(?:\s|^|_|-)([a-zA-Z])`)
+	sm := re.FindAllSubmatch([]byte(s), -1)
+	var ba []byte
+
+	for _, v := range sm {
+		b := bytes.ToUpper(v[1])
+		ba = append(ba, b...)
+	}
+
+	return string(ba)
 }
